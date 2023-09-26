@@ -14,7 +14,11 @@ function filterStudentsByGrade(students, grade) {
 
   console.log("Завдання: 1 ==============================");
 
-  const filter = students.filter((student) => student.grade);
+  const filterStudents = students.filter((student) => student.grade === grade);
+
+  filterStudents.forEach((student) => {
+    console.log(student);
+  });
   // Виведемо в консоль критичну помилку з текстом "Якщо ви бачите це повідомлення, то завдання 1 виконано не правильно"
   // Очищення консолі перед виведенням
   // Виведемо в консоль повідомлення для відстеження роботи програми з текстом: "Завдання: 1 =============================="
@@ -81,6 +85,7 @@ function warnAboutMaxArrayLength(arr, maxLength) {
     );
     return null;
   }
+
   if (arr.length > maxLength) {
     console.warn("Увага! Довжина масиву перевищує максимально допустиму!");
   } else {
@@ -109,6 +114,8 @@ warnAboutMaxArrayLength([1, 2, 3, 4, 5], 3);
  */
 function compareArrays(arr1, arr2) {
   arr1.sort();
+  //or
+  //arr1.sort((a,b)=>a-b)
   arr2.sort();
 
   let arr1J = JSON.stringify(arr1);
@@ -144,13 +151,15 @@ function buildMatrix(size) {
     let newMus = [];
     for (let j = 0; j < size; j++) {
       //   newMus += Math.floor(Math.random() * size);
-      newMus.push(Math.floor(Math.random() * size));
+      newMus.push(Math.floor(Math.random() * 10));
     }
     mus.push(newMus);
     // mus += newMus;
   }
 
   console.table(mus);
+
+  return mus;
   // Перевіряємо, чи size є числом.
   // Якщо size не є числом, виведеме в консоль критичну помилку з текстом "Аргумент має бути числом!".
   // Повертаємо null, що свідчить про неможливість обробки вхідних даних.
@@ -177,6 +186,7 @@ buildMatrix(5);
  */
 function traceBackward(n) {
   console.log(n);
+
   if (n > 1) {
     traceBackward(n - 1);
   }
@@ -236,15 +246,11 @@ displayGroupedInfo([
  *  userInput - об'єкт з введеними користувачем даними.
  */
 function validateUserInput(userInput) {
-  console.assert(
-    userInput.hasOwnProperty("username"),
-    "Помилка: ім'я користувача відсутнє!"
-  );
-  console.assert(
-    userInput.hasOwnProperty("password"),
-    "Помилка: пароль відсутній!"
-  );
-  if (userInput.password.length < 8) {
+  console.assert(userInput.username, "Помилка: ім'я користувача відсутнє!");
+
+  console.assert(userInput.password, "Помилка: пароль відсутній!");
+
+  if (userInput.password && userInput.password.length < 8) {
     console.error("Попередження: пароль має бути довшим за 8 символів!");
   }
   // Перевіремо умову наявності імені користувача, якщо воно відсутнє виводимо "Помилка: ім'я користувача відсутнє!"
@@ -265,9 +271,11 @@ validateUserInput({ username: "alex", password: "pass" });
  */
 function calculateTotalPrice(products) {
   console.time();
+
   let total = 0;
-  for (let a of products) {
-    total += a.price;
+
+  for (let product of products) {
+    total += product.price;
   }
   console.log("Загальна вартість товарів:", total);
   console.timeEnd();
@@ -297,11 +305,19 @@ calculateTotalPrice(products);
  *  word - слово, для якого потрібно порахувати кількість літер.
  */
 function countVowelsAndConsonants(word) {
-  //   let golos = "aeiou";
-  //   for (let a of word) {
-  // 	  a = a.toLowerCase();
-  // 	  if(a.inclides(golos)){console.log(`${}`)}
-  //   }
+  let golos = "aeiou";
+  for (let letter of word) {
+    letter = letter.toLowerCase();
+
+    if (golos.includes(letter)) {
+      console.count("Голосна");
+    } else {
+      console.count("Приголосна");
+    }
+  }
+
+  console.countReset("Голосна");
+  console.countReset("Приголосна");
   // Створюємо рядок де будуть всі голосні "aeiou"
   // Перебираємо кожну літеру у слові за допомогою for of
   // Перетворюємо літеру на малу літеру для порівняння
